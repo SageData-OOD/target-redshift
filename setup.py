@@ -20,7 +20,7 @@ setup(
     py_modules=['target_redshift'],
     install_requires=[
         'boto3>=1.9.205,<1.10.0',
-        'singer-target-postgres==0.2.4',
+        'git+https://github.com/SageData-OOD/target-postgres',
         'urllib3==1.25.9'
     ],
     setup_requires=[
