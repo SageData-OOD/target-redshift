@@ -40,8 +40,16 @@ def main(config, input_stream=None):
             redshift_schema=config.get('redshift_schema', 'public'),
             logging_level=config.get('logging_level'),
             default_column_length=config.get('default_column_length', 1000),
-            persist_empty_tables=config.get('persist_empty_tables')
+            persist_empty_tables=config.get('persist_empty_tables'),
+            # TODO: DP fix
+            redshift_copy_options=config.get('redshift_copy_options')
         )
+
+        # TODO: DP
+        with redshift_target.conn.cursor() as cur:
+            create_schema_sql = f"CREATE SCHEMA IF NOT EXISTS {config.get('redshift_schema', 'public')}"
+            # print(create_schema_sql)
+            cur.execute(create_schema_sql)
 
         if input_stream:
             target_tools.stream_to_target(input_stream, redshift_target, config=config)
@@ -51,5 +59,4 @@ def main(config, input_stream=None):
 
 def cli():
     args = utils.parse_args(REQUIRED_CONFIG_KEYS)
-
     main(args.config)
